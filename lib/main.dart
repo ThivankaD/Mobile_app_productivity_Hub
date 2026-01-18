@@ -5,15 +5,44 @@ import 'package:Actify/pages/reminder_page.dart';
 import 'package:Actify/pages/timetable_page.dart';
 import 'package:Actify/pages/userprofile_page.dart';
 import 'package:Actify/pages/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+
+  final prefs = await SharedPreferences.getInstance();
+  final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+  final userId = prefs.getString('userId');
+  final userName = prefs.getString('userName');
+  final userEmail = prefs.getString('userEmail');
+ 
+
+
+  runApp( MyApp(
+      isLoggedIn: isLoggedIn,
+      userId: userId,
+      userName: userName,
+      userEmail: userEmail,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+
+  final bool isLoggedIn;
+  final String? userId;
+  final String? userName;
+  final String? userEmail;
+
+  const MyApp({
+    super.key,
+    required this.isLoggedIn,
+    this.userId,
+    this.userName,
+    this.userEmail,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +55,13 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       
       ),
-      home: const LoginPage(),
+      home: isLoggedIn && userId != null
+          ? HomeShell(
+              userId: userId!,
+              userName: userName!,
+              userEmail: userEmail!,
+            )
+          : const LoginPage(),
     );
   }
 }

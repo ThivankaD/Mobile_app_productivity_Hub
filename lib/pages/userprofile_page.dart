@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../Services/firestore_service.dart';
 import '../Services/local_storage_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../pages/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserProfilePage extends StatefulWidget {
   final String userId;
@@ -36,6 +39,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
     _loadCounts();
   }
 
+  Future<void> _logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginPage()),
+      (route) => false,
+    );
+
+
+  }
   Future<void> _loadCounts() async {
     if (widget.userId.isNotEmpty) {
       // Get notes count from Firestore
@@ -424,6 +439,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Widget _buildLogoutButton() {
     return Container(
       width: double.infinity,
+      
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -464,6 +480,33 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
   }
+
+     void _showLogoutDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Log Out'),
+        content: const Text('Are you sure you want to log out?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _logout();
+            },
+            child: const Text(
+              'Log Out',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   void _showEditProfileDialog() {
     final nameController = TextEditingController(text: userName);
@@ -532,35 +575,5 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
   }
 
-  void _showLogoutDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        title: const Text('Log Out'),
-        content: const Text('Are you sure you want to log out?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              // Add logout logic here
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red[600],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text('Log Out'),
-          ),
-        ],
-      ),
-    );
-  }
+
 }
