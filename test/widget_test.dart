@@ -13,7 +13,9 @@ import 'package:Actify/main.dart';
 void main() {
   testWidgets('App boots and navigates between tabs', (WidgetTester tester) async {
     // Build the app
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget( MyApp(
+      isLoggedIn: false,
+    ));
     await tester.pumpAndSettle();
 
   // Starts on Notes page (AppBar title)

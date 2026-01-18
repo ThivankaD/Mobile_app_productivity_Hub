@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import 'register_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 
 class LoginPage extends StatefulWidget {
@@ -38,6 +39,15 @@ class _LoginPageState extends State<LoginPage> {
 
       if (result != null && mounted) {
         if (result['success'] == true) {
+
+          // ✅ SAVE LOGIN STATE (THIS IS THE KEY)
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        await prefs.setString('userId', result['userId']);
+        await prefs.setString('userName', result['name']);
+        await prefs.setString('userEmail', result['email']);
+
+
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
