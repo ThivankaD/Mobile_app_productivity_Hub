@@ -6,7 +6,8 @@ import 'package:Actify/pages/timetable_page.dart';
 import 'package:Actify/pages/userprofile_page.dart';
 import 'package:Actify/pages/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:provider/provider.dart';
+import 'Services/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,11 +22,16 @@ void main() async {
  
 
 
-  runApp( MyApp(
+  runApp(
+    ChangeNotifierProvider(
+    create: (_) => ThemeProvider(),
+    child: MyApp(
       isLoggedIn: isLoggedIn,
       userId: userId,
       userName: userName,
       userEmail: userEmail,
+    ),
+    
   ));
 }
 
@@ -46,15 +52,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
       title: 'Student Organizer',
       debugShowCheckedModeBanner: false,
+      themeMode: themeProvider.themeMode,
+
       theme: ThemeData(
+        brightness: Brightness.light,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        scaffoldBackgroundColor: const Color.fromARGB(255, 17, 16, 16),
+        scaffoldBackgroundColor: Colors.white,
+        textTheme: ThemeData.light().textTheme,
         useMaterial3: true,
-      
       ),
+
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+          brightness: Brightness.dark,
+        ),
+        scaffoldBackgroundColor: const Color(0xFF111010),
+        textTheme: ThemeData.dark().textTheme,
+        useMaterial3: true,
+      ),
+
+       
+      
+      
       home: isLoggedIn && userId != null
           ? HomeShell(
               userId: userId!,

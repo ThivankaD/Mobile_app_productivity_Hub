@@ -44,21 +44,19 @@ class _TimetablePageState extends State<TimetablePage> {
     }).toList();
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        title: const Text(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: Text(
           'Timetable',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
+          style:Theme.of(context).textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.bold,
+        ), 
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.today, color: Colors.black87),
+            icon: Icon(Icons.today, color: Theme.of(context).colorScheme.onSurface),
             onPressed: () {
               setState(() {
                 selectedDate = DateTime.now();
@@ -66,7 +64,7 @@ class _TimetablePageState extends State<TimetablePage> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.calendar_month, color: Colors.black87),
+            icon: Icon(Icons.calendar_month, color: Theme.of(context).colorScheme.onSurface),
             onPressed: () {
               _showDatePicker(context);
             },
@@ -76,7 +74,7 @@ class _TimetablePageState extends State<TimetablePage> {
       body: Column(
         children: [
           Container(
-            color: Colors.white,
+            color: Theme.of(context).scaffoldBackgroundColor,
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
