@@ -3,6 +3,8 @@ import '../Services/firestore_service.dart';
 import '../Services/local_storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../pages/login_page.dart';
+import 'package:provider/provider.dart';
+import '../Services/theme_provider.dart';
 
 
 class UserProfilePage extends StatefulWidget {
@@ -80,13 +82,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             expandedHeight: 240,
             pinned: true,
-            backgroundColor: Colors.blue[700],
+            backgroundColor: Theme.of(context).primaryColor,
             flexibleSpace: FlexibleSpaceBar(
               background: Container(
                 decoration: BoxDecoration(
@@ -343,11 +345,18 @@ class _UserProfilePageState extends State<UserProfilePage> {
           _buildSettingsItem(
             icon: Icons.dark_mode_outlined,
             title: 'Dark Mode',
-            trailing: Switch(
-              value: false,
-              onChanged: (value) {},
-            ),
+            trailing: Consumer<ThemeProvider>(
+            builder: (context, themeProvider, child) {
+              return Switch(
+                value: themeProvider.themeMode == ThemeMode.dark,
+                onChanged: (value) {
+                  themeProvider.toggleTheme(value);
+                },
+              );
+            },
           ),
+          ),
+
           const Divider(height: 1),
           _buildSettingsItem(
             icon: Icons.language_outlined,

@@ -244,17 +244,15 @@ class _RemindersPageState extends State<RemindersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        title: const Text(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: Text(
           'Reminders',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
+          style:Theme.of(context).textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
         ),
       ),
       body: _reminders.isEmpty

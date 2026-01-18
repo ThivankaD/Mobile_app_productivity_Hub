@@ -136,25 +136,23 @@ class _NotesPageState extends State<NotesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        title: const Text(
+        backgroundColor:  Theme.of(context).scaffoldBackgroundColor,
+        title: Text(
           'Notes',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-          ),
+           style:Theme.of(context).textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: Colors.black87),
+            icon: Icon(Icons.search, color: Theme.of(context).colorScheme.onSurface),
             onPressed: () {},
           ),
           IconButton(
-            icon: const Icon(Icons.more_vert, color: Colors.black87),
+            icon: Icon(Icons.more_vert, color: Theme.of(context).colorScheme.onSurface),
             onPressed: () {},
           ),
         ],
